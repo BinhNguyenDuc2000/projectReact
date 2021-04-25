@@ -1,0 +1,148 @@
+<html lang="en">
+<head>
+    <title>Test your reaction</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style type="text/css">
+        #shape {
+            display: none;
+            position: absolute; 
+        }
+        #section1 {
+            height: 35%;
+            width: 50%;
+            position: absolute;
+            left: 25%;
+            background-color: antiquewhite;
+            border: 0.2cm;
+            border-color: darkred;
+            border-style: solid;
+            text-align: center;
+            color:darkred;
+            overflow: auto;
+        }
+        #section2 {
+            width: 50%;
+            height: 50%;
+            background-color: antiquewhite;
+            position: absolute;
+            top: 40%;
+            left: 25%;
+            margin-top: 3%;
+            border: 0.2cm;
+            border-color: darkred;
+            border-style: solid;
+        }
+        body {
+            background-color: cadetblue;
+        }
+        .container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        }
+        .icon {
+            display: block;
+            width: 50%;
+            height: 50%;
+            background: url("Asset2.png");
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+        #button {
+            color:rgb(141,198,163);
+            width: 35%;
+            height: 20%;
+            font-size: x-large;
+        }
+        
+    </style>
+</head>
+<body style="font-size:x-large">
+    <div id="Section1">
+    <h3>Test your reaction!</h3>
+    <p id="instruction">Press start to begin</p>
+    <p id="info" style="font-weight: bold;display: none;">Your average time is: <span id="time"></span></p>
+    </div>
+    <div id="section2">
+        <div class="container">
+        <h1 id="ready"></h1>
+        <button id="button"><div class="container"><span class="icon"></span> Start</div></button>
+        </div>
+    <div id="shape"></div>
+    </div>
+    <script type="text/javascript">
+        var sum;
+        var times;
+        var start;
+        document.getElementById("button").onclick = function pressStart(){
+            document.getElementById("shape").style.display = "none";
+            document.getElementById("instruction").innerHTML = "Click the shape as fast as posible";
+            document.getElementById("button").style.display = "none";
+            document.getElementById("button").innerHTML = "<div class='container'><span class='icon'></span> Restart</div>";
+            document.getElementById("info").style.display = "block";
+            document.getElementById("time").innerHTML = "0s";
+            times = 0;
+            sum = 0;
+            document.getElementById("ready").style.display = "block";
+            document.getElementById("ready").innerHTML = "Get Ready";
+            setTimeout(getReady,2000);
+        }
+        function getReady(){
+            document.getElementById("ready").style.display = "none";
+            appearAfterDelay();
+        }
+        function getRandomColor(){
+            var letters = '0123456789ABCDEF'.split('');
+            var color = '#';
+            for (var i=0;i<6;i++){
+                color += letters[Math.floor(Math.random()*16)];
+            }
+            return color;
+        }
+        function stop(){
+            document.getElementById("button").style.display = "initial";
+        }
+        function makeShapeAppear() {
+            var panel = document.getElementById("panel");
+            var top = Math.round(Math.random()*(100-section2.offsetWidth/section2.offsetHeight*20));
+            var left = Math.round(Math.random()*80);
+            var width = Math.round(Math.random()*0)+10;
+            if (Math.random()<0.5){
+                document.getElementById("shape").style.borderRadius ="50%";
+            }
+            else {
+                document.getElementById("shape").style.borderRadius ="0%";
+            }
+            document.getElementById("shape").style.width = width +"%";
+            document.getElementById("shape").style.height = section2.offsetWidth* width/section2.offsetHeight +"%";
+            document.getElementById("shape").style.top = top +"%";
+            document.getElementById("shape").style.left = left +"%";
+            document.getElementById("shape").style.backgroundColor = getRandomColor();
+            document.getElementById("shape").style.display = "block";
+            start = new Date().getTime();
+
+        }
+        function appearAfterDelay() {
+            setTimeout(makeShapeAppear,Math.random()*3000);
+        }
+        document.getElementById("shape").onclick = function(){
+            document.getElementById("shape").style.display="none";
+            var end = new Date().getTime();
+            var time = (end-start)/1000;
+            times++;
+            sum+= time;
+            document.getElementById("time").innerHTML = Number(sum/times).toFixed(2) + "s";
+            if (times<10){
+                appearAfterDelay();
+            }
+            else{
+                stop();
+            }
+        }
+    </script>
+</body>
+</html>
